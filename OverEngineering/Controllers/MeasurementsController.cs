@@ -9,11 +9,11 @@ namespace OverEngineering.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WaterController : ControllerBase
+    public class MeasurementsController : ControllerBase
     {
         private readonly RawMeasuresCollectorFactory _collectorFactory;
 
-        public WaterController(RawMeasuresCollectorFactory collectorFactory)
+        public MeasurementsController(RawMeasuresCollectorFactory collectorFactory)
         {
             _collectorFactory = collectorFactory;
         }
