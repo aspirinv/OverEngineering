@@ -14,12 +14,9 @@ namespace OverEngineering.Controllers
         [HttpGet]
         public async Task<ActionResult<MeasurementSet>> Get([FromQuery] DateTime? from = null, [FromQuery] DateTime? to = null)
         {
-            // Defaulting values
-            from ??= DateTime.Today.AddDays(-1);
-            to ??= DateTime.Today;
-            // Defining URLs
-            var query = $"beginn={from:dd.MM.yyyy}&ende={to:dd.MM.yyyy}";
-            using var collector = new RawMeasuresCollector(query);
+            using var collector = new RawMeasuresCollector();
+            collector.SetFrom(from);
+            collector.SetTo(to);
             var parser = new MeasureParser(collector);
             try
             {

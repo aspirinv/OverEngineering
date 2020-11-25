@@ -8,15 +8,25 @@ namespace OverEngineering.Logic
     public class RawMeasuresCollector: IRawMeasuresCollector, IDisposable
     {
         private static Uri BaseUrl = new Uri("https://www.gkd.bayern.de/de/fluesse/");
-        private readonly string _query;
+        private readonly UrlQueryBuilder _queryBuilder;
         private readonly HttpClient _client;
 
-        public RawMeasuresCollector(string query)
+        public RawMeasuresCollector()
         {
-            _query = query;
+            _queryBuilder = new UrlQueryBuilder();
             _client = new HttpClient { BaseAddress = BaseUrl };
         }
 
+        public void SetFrom(DateTime? from)
+        {
+            if (from.HasValue)
+                _queryBuilder.From = from.Value;
+        }
+        public void SetTo(DateTime? to)
+        {
+            if (to.HasValue)
+                _queryBuilder.To = to.Value;
+        }
         public void Dispose()
         {
             _client.Dispose();
@@ -24,18 +34,12 @@ namespace OverEngineering.Logic
 
         public async Task<string> CollectRawMeasurement(MeasureType measure)
         {
-            var apiName = measure switch
-            {
-                MeasureType.Temperature => "wassertemperatur",
-                MeasureType.Level => "wasserstand",
-                _ => throw new NotImplementedException($"Measure type {measure} not implemented")
-            };
             // Retrieving the data
-            var response = await _client.GetAsync($"{apiName}/isar/muenchen-tieraerztl-hochschule-16516008/messwerte/tabelle?{_query}");
+            var response = await _client.GetAsync(_queryBuilder.Build(measure));
             var html = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception($"{apiName} gathering failed with. [{response.StatusCode}] {html}");
+                throw new Exception($"{measure} gathering failed with. [{response.StatusCode}] {html}");
             }
             return html;
         }
