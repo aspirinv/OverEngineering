@@ -9,6 +9,7 @@ namespace OverEngineering.Logic
 
         public string BuildTemperatureQuery() => Build("wassertemperatur");
         public string BuildLevelQuery() => Build("wasserstand");
+        public string BuildPressureQuery() => Build("abfluss");
 
         private string Build(string apiName)
         {

@@ -9,5 +9,6 @@ namespace OverEngineering.DTO
     {
         public IEnumerable<Measurement> Temperature { get; set; }
         public IEnumerable<Measurement> Level { get; set; }
+        public IEnumerable<Measurement> Pressure { get; set; }
     }
 }
