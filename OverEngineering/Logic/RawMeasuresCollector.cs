@@ -5,30 +5,15 @@ using System.Threading.Tasks;
 
 namespace OverEngineering.Logic
 {
-    public class RawMeasuresCollector: IRawMeasuresCollector, IDisposable
+    public class RawMeasuresCollector: IRawMeasuresCollector
     {
         private readonly UrlQueryBuilder _queryBuilder;
         private readonly HttpClient _client;
 
-        public RawMeasuresCollector(IHttpClientFactory clientFactory)
+        public RawMeasuresCollector(HttpClient client, UrlQueryBuilder builder)
         {
-            _queryBuilder = new UrlQueryBuilder();
-            _client = clientFactory.CreateClient(Constants.ClientName);
-        }
-
-        public void SetFrom(DateTime? from)
-        {
-            if (from.HasValue)
-                _queryBuilder.From = from.Value;
-        }
-        public void SetTo(DateTime? to)
-        {
-            if (to.HasValue)
-                _queryBuilder.To = to.Value;
-        }
-        public void Dispose()
-        {
-            _client.Dispose();
+            _queryBuilder = builder;
+            _client = client;
         }
 
         public async Task<string> CollectRawMeasurement(MeasureType measure)

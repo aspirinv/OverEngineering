@@ -29,7 +29,7 @@ namespace OverEngineering
                 client.BaseAddress = new Uri(settings.BaseUrl);
             });
 
-            services.AddTransient<IRawMeasuresCollector, RawMeasuresCollector>();
+            services.AddTransient<RawMeasuresCollectorFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

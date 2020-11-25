@@ -11,21 +11,17 @@ namespace OverEngineering.Controllers
     [ApiController]
     public class WaterController : ControllerBase
     {
-        private readonly IRawMeasuresCollector _collector;
+        private readonly RawMeasuresCollectorFactory _collectorFactory;
 
-        public WaterController(IRawMeasuresCollector collector)
+        public WaterController(RawMeasuresCollectorFactory collectorFactory)
         {
-            _collector = collector;
+            _collectorFactory = collectorFactory;
         }
-
 
         [HttpGet]
         public async Task<ActionResult<MeasurementSet>> Get([FromQuery] DateTime? from = null, [FromQuery] DateTime? to = null)
         {
-            _collector.SetFrom(from);
-            _collector.SetTo(to);
-            var parser = new MeasureParser(_collector);
-
+            var parser = new MeasureParser(_collectorFactory.CreateCollector(from, to));
             return Ok(new MeasurementSet
             {
                 Temperature = await parser.GetMeasures(MeasureType.Temperature),
