@@ -16,14 +16,19 @@ namespace OverEngineering.Logic
             _client = client;
         }
 
-        public async Task<string> CollectRawMeasurement(MeasureType measure)
+        public Task<string> CollectRawTemperature()
+            => CollectRawMeasurement(_queryBuilder.BuildTemperatureQuery());
+        public Task<string> CollectRawLevel()
+            => CollectRawMeasurement(_queryBuilder.BuildLevelQuery());
+
+        private async Task<string> CollectRawMeasurement(string path)
         {
             // Retrieving the data
-            var response = await _client.GetAsync(_queryBuilder.Build(measure));
+            var response = await _client.GetAsync(path);
             var html = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception($"{measure} gathering failed with. [{response.StatusCode}] {html}");
+                throw new Exception($"{path} gathering failed with. [{response.StatusCode}] {html}");
             }
             return html;
         }

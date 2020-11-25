@@ -24,8 +24,8 @@ namespace OverEngineering.Controllers
             var parser = new MeasureParser(_collectorFactory.CreateCollector(from, to));
             return Ok(new MeasurementSet
             {
-                Temperature = await parser.GetMeasures(MeasureType.Temperature),
-                Level = await parser.GetMeasures(MeasureType.Level),
+                Temperature = await parser.GetTemperature(),
+                Level = await parser.GetLevel(),
             });
         }
     }

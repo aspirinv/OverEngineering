@@ -17,9 +17,13 @@ namespace OverEngineering.Logic
             _collector = collector;
         }
 
-        public async Task<IEnumerable<Measurement>> GetMeasures(MeasureType measure)
+        public async Task<IEnumerable<Measurement>> GetTemperature() 
+            => GetMeasures(await _collector.CollectRawTemperature());
+        public async Task<IEnumerable<Measurement>> GetLevel() 
+            => GetMeasures(await _collector.CollectRawLevel());
+
+        private IEnumerable<Measurement> GetMeasures(string html)
         {
-            var html = await _collector.CollectRawMeasurement(measure);
             // Parsing HTML response
             var bodyMatch = Regex.Match(html, "<tbody>(.*)<\\/tbody>");
             if (!bodyMatch.Success)

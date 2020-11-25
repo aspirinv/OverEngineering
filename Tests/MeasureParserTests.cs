@@ -16,11 +16,11 @@ namespace Tests
         {
             var collector = new Mock<IRawMeasuresCollector>();
             collector
-                .Setup(c => c.CollectRawMeasurement(MeasureType.Temperature))
+                .Setup(c => c.CollectRawTemperature())
                 .Returns(Task.FromResult(_temperatureDataA));
 
             var actual = (await new MeasureParser(collector.Object)
-                .GetMeasures(MeasureType.Temperature)
+                .GetTemperature()
                 ).ToArray();
 
             Assert.AreEqual(165, actual.Length);
@@ -32,11 +32,11 @@ namespace Tests
         {
             var collector = new Mock<IRawMeasuresCollector>();
             collector
-                .Setup(c => c.CollectRawMeasurement(MeasureType.Level))
+                .Setup(c => c.CollectRawLevel())
                 .Returns(Task.FromResult(_levelDataA));
 
             var actual = (await new MeasureParser(collector.Object)
-                .GetMeasures(MeasureType.Level)
+                .GetLevel()
                 ).ToArray();
 
             Assert.AreEqual(165, actual.Length);
