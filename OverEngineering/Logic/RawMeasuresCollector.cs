@@ -22,6 +22,8 @@ namespace OverEngineering.Logic
             => CollectRawMeasurement(_queryBuilder.BuildLevelQuery());
         public Task<string> CollectRawPressure()
             => CollectRawMeasurement(_queryBuilder.BuildPressureQuery());
+        public Task<string> CollectRawAirTemperature()
+            => CollectRawMeasurement(_queryBuilder.BuildAirTemperatureQuery());
 
         private async Task<string> CollectRawMeasurement(string path)
         {

@@ -27,6 +27,7 @@ namespace OverEngineering.Controllers
                 Temperature = await parser.GetTemperature(),
                 Level = await parser.GetLevel(),
                 Pressure = await parser.GetPressure(),
+                AirTemperature = await parser.GetAirTemperature(),
             });
         }
     }

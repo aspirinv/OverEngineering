@@ -23,6 +23,8 @@ namespace OverEngineering.Logic
             => GetMeasures(await _collector.CollectRawLevel());
         public async Task<IEnumerable<Measurement>> GetPressure()
             => GetMeasures(await _collector.CollectRawPressure());
+        public async Task<IEnumerable<Measurement>> GetAirTemperature()
+            => GetMeasures(await _collector.CollectRawAirTemperature());
 
         private IEnumerable<Measurement> GetMeasures(string html)
         {

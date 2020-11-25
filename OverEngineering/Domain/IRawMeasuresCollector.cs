@@ -7,5 +7,6 @@ namespace OverEngineering.Domain
         Task<string> CollectRawLevel();
         Task<string> CollectRawTemperature();
         Task<string> CollectRawPressure();
+        Task<string> CollectRawAirTemperature();
     }
 }
