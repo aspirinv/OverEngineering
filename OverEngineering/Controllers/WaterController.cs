@@ -19,7 +19,8 @@ namespace OverEngineering.Controllers
             to ??= DateTime.Today;
             // Defining URLs
             var query = $"beginn={from:dd.MM.yyyy}&ende={to:dd.MM.yyyy}";
-            using var parser = new MeasureParser(query);
+            using var collector = new RawMeasuresCollector(query);
+            var parser = new MeasureParser(collector);
             try
             {
                 // Collecting data

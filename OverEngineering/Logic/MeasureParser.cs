@@ -1,46 +1,25 @@
-﻿using OverEngineering.DTO;
+﻿using OverEngineering.Domain;
+using OverEngineering.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace OverEngineering.Logic
 {
-    public class MeasureParser : IDisposable
+    public class MeasureParser 
     {
-        private static Uri BaseUrl = new Uri("https://www.gkd.bayern.de/de/fluesse/");
-        private readonly string _query;
-        private readonly HttpClient _client;
+        private readonly IRawMeasuresCollector _collector;
 
-        public MeasureParser(string query)
+        public MeasureParser(IRawMeasuresCollector collector)
         {
-            _query = query;
-            _client = new HttpClient { BaseAddress = BaseUrl };
-        }
-
-        public void Dispose()
-        {
-            _client.Dispose();
+            _collector = collector;
         }
 
         public async Task<IEnumerable<Measurement>> GetMeasures(MeasureType measure)
         {
-            var apiName = measure switch
-            {
-                MeasureType.Temperature => "wassertemperatur",
-                MeasureType.Level => "wasserstand",
-                _ => throw new NotImplementedException($"Measure type {measure} not implemented")
-            };
-
-            // Retrieving the data
-            var response = await _client.GetAsync($"{apiName}/isar/muenchen-tieraerztl-hochschule-16516008/messwerte/tabelle?{_query}");
-            var html = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
-            {
-                throw new Exception($"{apiName} gathering failed with. [{response.StatusCode}] {html}");
-            }
+            var html = await _collector.CollectRawMeasurement(measure);
             // Parsing HTML response
             var bodyMatch = Regex.Match(html, "<tbody>(.*)<\\/tbody>");
             if (!bodyMatch.Success)
