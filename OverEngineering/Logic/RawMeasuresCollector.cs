@@ -7,14 +7,13 @@ namespace OverEngineering.Logic
 {
     public class RawMeasuresCollector: IRawMeasuresCollector, IDisposable
     {
-        private static Uri BaseUrl = new Uri("https://www.gkd.bayern.de/de/fluesse/");
         private readonly UrlQueryBuilder _queryBuilder;
         private readonly HttpClient _client;
 
-        public RawMeasuresCollector()
+        public RawMeasuresCollector(IHttpClientFactory clientFactory)
         {
             _queryBuilder = new UrlQueryBuilder();
-            _client = new HttpClient { BaseAddress = BaseUrl };
+            _client = clientFactory.CreateClient(Constants.ClientName);
         }
 
         public void SetFrom(DateTime? from)

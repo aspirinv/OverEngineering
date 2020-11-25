@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OverEngineering.Domain;
 using OverEngineering.DTO;
 using OverEngineering.Logic;
 
@@ -11,26 +11,26 @@ namespace OverEngineering.Controllers
     [ApiController]
     public class WaterController : ControllerBase
     {
+        private readonly IRawMeasuresCollector _collector;
+
+        public WaterController(IRawMeasuresCollector collector)
+        {
+            _collector = collector;
+        }
+
+
         [HttpGet]
         public async Task<ActionResult<MeasurementSet>> Get([FromQuery] DateTime? from = null, [FromQuery] DateTime? to = null)
         {
-            using var collector = new RawMeasuresCollector();
-            collector.SetFrom(from);
-            collector.SetTo(to);
-            var parser = new MeasureParser(collector);
-            try
+            _collector.SetFrom(from);
+            _collector.SetTo(to);
+            var parser = new MeasureParser(_collector);
+
+            return Ok(new MeasurementSet
             {
-                // Collecting data
-                return Ok(new MeasurementSet
-                {
-                    Temperature = await parser.GetMeasures(MeasureType.Temperature),
-                    Level = await parser.GetMeasures(MeasureType.Level),
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+                Temperature = await parser.GetMeasures(MeasureType.Temperature),
+                Level = await parser.GetMeasures(MeasureType.Level),
+            });
         }
     }
 }
