@@ -24,7 +24,7 @@ namespace Tests
                 ).ToArray();
 
             Assert.AreEqual(165, actual.Length);
-            Assert.AreEqual(7.1M, actual.First(l => l.Date == DateTime.Parse("24.11.2020 10:15")).Value);
+            Assert.AreEqual(7.1M, actual.First(l => l.Date == DateTime.Parse("2020-11-24T10:15")).Value);
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace Tests
                 ).ToArray();
 
             Assert.AreEqual(165, actual.Length);
-            Assert.AreEqual(68M, actual.First(l=>l.Date == DateTime.Parse("24.11.2020 10:15")).Value);
+            Assert.AreEqual(68M, actual.First(l=>l.Date == DateTime.Parse("2020-11-24T10:15")).Value);
         }
 
         #region Test data

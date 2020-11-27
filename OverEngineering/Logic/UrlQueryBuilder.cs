@@ -14,7 +14,7 @@ namespace OverEngineering.Logic
             => $"/de/meteo/lufttemperatur/isar/eichenried-200114/messwerte/tabelle{Query()}";
 
         private string Build(string apiName)
-            =>  $"{apiName}/isar/muenchen-tieraerztl-hochschule-16516008/messwerte/tabelle{Query()}";
+            =>  $"{apiName}/isar/muenchen-himmelreichbruecke-16515005/messwerte/tabelle{Query()}";
         private string Query() => $"?beginn={From:dd.MM.yyyy}&ende={To:dd.MM.yyyy}";
     }
 }
