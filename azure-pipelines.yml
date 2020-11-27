@@ -9,19 +9,18 @@ pool:
 steps:
 
 - task: DotNetCoreCLI@2
+  name: 'restore'
   inputs:
     command: 'restore'
     feedsToUse: 'select'
 
 - task: DotNetCoreCLI@2
+  name: 'build'
   inputs:
     command: 'build'
-    
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
 
 - task: DotNetCoreCLI@2
+  name: 'publish'
   inputs:
     command: 'publish'
     publishWebProjects: true
