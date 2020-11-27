@@ -30,10 +30,8 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: AzureRmWebAppDeployment@4
+- task: DotNetCoreCLI@2
   inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Free Trial (5dbaf2ab-b2f6-4015-8de8-b7fc0458da2b)'
-    appType: 'webApp'
-    WebAppName: 'IsarMeasurements'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    command: 'publish'
+    publishWebProjects: true
+
